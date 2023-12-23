@@ -18,4 +18,16 @@ public class SocialMediaService {
         return socialMediaDAO.registerAnAccount(user); 
     }
 
+    public Message createMessage(Message m){
+        if(m.getMessage_text() == null)
+            return null;
+        if(m.getMessage_text().length() > 255)
+            return null; 
+        if(m.getMessage_text().replaceAll(" ", "") == "")
+            return null;
+
+
+        return socialMediaDAO.createMessage(m); 
+    }
+
 }

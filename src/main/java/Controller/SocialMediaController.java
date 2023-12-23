@@ -26,8 +26,20 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
         app.post("/register", this::registerAnAccount); 
         app.post("/login", this::validUser);
+        app.post("/messages", this::createMessage);
         
         return app;
+    }
+
+    private void createMessage(Context ctx){
+        Message m = ctx.bodyAsClass(Message.class); 
+        Message r = socialMediaService.createMessage(m); 
+        if(r != null){
+            ctx.json(r).status(200); 
+        }
+        else{
+            ctx.status(400); 
+        }
     }
 
     /**
