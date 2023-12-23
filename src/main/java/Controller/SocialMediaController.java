@@ -30,7 +30,15 @@ public class SocialMediaController {
         
         return app;
     }
-
+    /**
+     * Handles the HTTP request to create a new message.
+     *
+     * Extracts a {@code Message} object from the request body and attempts to create a new message
+     * using the service layer. If the message creation is successful, sends a 200 status code with
+     * the message details in JSON format. If the creation fails, sends a 400 status code.
+     *
+     * @param ctx The Javalin context object for handling web requests and responses.
+     */
     private void createMessage(Context ctx){
         Message m = ctx.bodyAsClass(Message.class); 
         Message r = socialMediaService.createMessage(m); 
@@ -49,8 +57,16 @@ public class SocialMediaController {
     private void exampleHandler(Context context) {
         context.json("sample text");
     }
-    /* todo 
-     * This is the function that will make an account when one does not already exist
+
+
+    /**
+     * Handles the HTTP request to register a new account.
+     *
+     * Parses an {@code Account} object from the request body and attempts to register it 
+     * using the service layer. If the registration is successful, responds with a 200 status 
+     * code and the account details in JSON format. If registration fails, responds with a 400 status code.
+     *
+     * @param ctx The Javalin context object for handling web requests and responses.
      */
     private void registerAnAccount(Context ctx){
         Account registeringUser = ctx.bodyAsClass(Account.class); 
@@ -63,8 +79,15 @@ public class SocialMediaController {
         }
     }
 
-    /*
-     * this function will be used for loging a person in
+    /**
+     * Handles the HTTP request for user authentication.
+     *
+     * Extracts an {@code Account} object from the request body, representing the user attempting to authenticate.
+     * The method then uses the service layer to validate the user. If authentication is successful,
+     * responds with a 200 status code and the authenticated user's details in JSON format. If authentication
+     * fails, responds with a 401 (Unauthorized) status code.
+     *
+     * @param ctx The Javalin context object for web request and response handling.
      */
     private void validUser(Context ctx){
         Account attemptedUser = ctx.bodyAsClass(Account.class);
