@@ -10,7 +10,12 @@ public class SocialMediaService {
 
     public Account validUser(Account user){
         return socialMediaDAO.validUser(user);
-        
+    }
+
+    public Account registerAnAccount(Account user){
+        if(user.getUsername() == null ||user.getUsername().replaceAll(" ", "") == "" || user.getPassword().length() < 4)
+            return null;     
+        return socialMediaDAO.registerAnAccount(user); 
     }
 
 }

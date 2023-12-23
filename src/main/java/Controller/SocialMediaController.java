@@ -40,8 +40,15 @@ public class SocialMediaController {
     /* todo 
      * This is the function that will make an account when one does not already exist
      */
-    private void registerAnAccount(Context context){
-
+    private void registerAnAccount(Context ctx){
+        Account registeringUser = ctx.bodyAsClass(Account.class); 
+        Account user = socialMediaService.registerAnAccount(registeringUser); 
+        if(user != null){
+            ctx.json(user).status(200); 
+        }
+        else{
+            ctx.status(400); 
+        }
     }
 
     /*

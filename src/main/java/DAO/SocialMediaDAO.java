@@ -22,4 +22,28 @@ public class SocialMediaDAO {
 
         return null; 
     }
+
+
+    public Account registerAnAccount(Account user){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            PreparedStatement ps = conn.prepareStatement("INSERT INTO account(username, password) values (?, ?)", Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword()); 
+
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys(); 
+
+            while(rs.next()){
+                int id = rs.getInt(1); 
+
+                return new Account(id, user.getUsername(), user.getPassword()); 
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace(); 
+        }
+
+        return null; 
+
+    }
 }
