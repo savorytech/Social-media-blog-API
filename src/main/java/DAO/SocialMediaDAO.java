@@ -7,6 +7,34 @@ import java.util.List;
 import java.util.ArrayList; 
 public class SocialMediaDAO {
     /**
+     * Retrieves a specific message by its ID from the database.
+     * Executes a SQL query to find the message with the specified ID.
+     * Converts the query result into a {@code Message} object if found.
+     * In case of a SQL exception, the stack trace is printed.
+     *
+     * @param message_id The ID of the message to retrieve.
+     * @return The {@code Message} object if found, otherwise null.
+     */
+    public Message getMessageById(int message_id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            PreparedStatement ps = conn.prepareStatement("select * from message where message_id = ? "); 
+            ps.setInt(1, message_id);
+            ResultSet rs = ps.executeQuery(); 
+
+            while(rs.next()){
+                Message m = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                return m; 
+            }
+        }
+        catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return null; 
+    }
+
+
+    /**
      * Fetches all messages from the database.
      * Executes a SQL query to retrieve all messages, converting each result into a {@code Message} object.
      * Adds these objects to a list, which is returned.

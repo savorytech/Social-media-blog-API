@@ -1,7 +1,6 @@
 package Controller;
 
 import Service.SocialMediaService;
-import Util.ConnectionUtil;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 import Model.*;
@@ -28,12 +27,25 @@ public class SocialMediaController {
         app.post("/login", this::validUser);
         app.post("/messages", this::createMessage);
         app.get("/messages", this::getAllMessages); 
+        app.get("/messages/{message_id}", this::getMessageById);
         
         return app;
     }
 
-
     /**
+     * Retrieves a message by its ID from the service layer and sends it in JSON format to the client.
+     * Extracts the message ID from the request's path parameter, and uses it to fetch the corresponding message.
+     * If the message is found, it is returned as a JSON response; otherwise, no response is sent.
+     *
+     * @param ctx the Javalin context object, used for extracting the message ID from the request and sending the response
+     */
+    private void getMessageById(Context ctx){
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message m = socialMediaService.getMessageById(message_id); 
+        if(m != null)
+            ctx.json(m); 
+    }
+    /** 
      * Handles an HTTP GET request to retrieve all messages.
      * This method delegates the task of fetching messages to the service layer.
      * Once retrieved, it sends these messages back to the client in JSON format.

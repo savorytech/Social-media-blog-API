@@ -65,5 +65,16 @@ public class SocialMediaService {
     public List<Message> getAllMessages(){
         return socialMediaDAO.getAllMessages(); 
     }
+    
+    /**
+     * Retrieves a message by its ID from the DAO layer.
+     * Delegates the task of fetching the specific message to the {@code socialMediaDAO}.
+     *
+     * @param message_id The ID of the message to be retrieved.
+     * @return Message object corresponding to the given ID, or null if no message is found.
+     */
+    public Message getMessageById(int message_id){
+        return socialMediaDAO.getMessageById(message_id); 
+    }
 
 }
