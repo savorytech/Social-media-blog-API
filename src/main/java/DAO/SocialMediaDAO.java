@@ -3,7 +3,33 @@ import Util.ConnectionUtil;
 import java.sql.*;
 
 import Model.*; 
+import java.util.List; 
+import java.util.ArrayList; 
 public class SocialMediaDAO {
+    /**
+     * Fetches all messages from the database.
+     * Executes a SQL query to retrieve all messages, converting each result into a {@code Message} object.
+     * Adds these objects to a list, which is returned.
+     * In case of a SQL exception, the error message is printed to the console.
+     *
+     * @return List of {@code Message} objects representing each message in the database
+     */
+    public List<Message> getAllMessages(){
+        List<Message> messages = new ArrayList<>(); 
+        try(Connection conn = ConnectionUtil.getConnection()){
+            PreparedStatement ps = conn.prepareStatement("select * from message;");
+            ResultSet rs = ps.executeQuery(); 
+            while(rs.next()){
+                Message m = new Message(rs.getInt("message_id"), rs.getInt("posted_by"), rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                messages.add(m);
+            }
+        }catch(SQLException e ){
+            System.out.println(e.getMessage());
+        }
+
+        return messages; 
+    }
+    
     /**
      * Authenticates a user by matching the username and password in the database.
      *

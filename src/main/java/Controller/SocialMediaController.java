@@ -27,9 +27,23 @@ public class SocialMediaController {
         app.post("/register", this::registerAnAccount); 
         app.post("/login", this::validUser);
         app.post("/messages", this::createMessage);
+        app.get("/messages", this::getAllMessages); 
         
         return app;
     }
+
+
+    /**
+     * Handles an HTTP GET request to retrieve all messages.
+     * This method delegates the task of fetching messages to the service layer.
+     * Once retrieved, it sends these messages back to the client in JSON format.
+     *
+     * @param ctx the Javalin context object, which facilitates handling the request and response
+     */
+    private void getAllMessages(Context ctx ){
+        ctx.json(socialMediaService.getAllMessages()); 
+    }
+
     /**
      * Handles the HTTP request to create a new message.
      *

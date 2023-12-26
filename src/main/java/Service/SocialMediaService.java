@@ -2,6 +2,7 @@ package Service;
 
 import DAO.SocialMediaDAO;
 import Model.*; 
+import java.util.List;
 public class SocialMediaService {
     private SocialMediaDAO socialMediaDAO; 
     /**
@@ -52,9 +53,17 @@ public class SocialMediaService {
             return null; 
         if(m.getMessage_text().replaceAll(" ", "") == "")
             return null;
-
-
         return socialMediaDAO.createMessage(m); 
+    }
+
+    /**
+     * Retrieves all messages from the DAO layer.
+     * This method simply delegates the task to the {@code socialMediaDAO}.
+     *
+     * @return List of {@code Message} objects from the database
+     */
+    public List<Message> getAllMessages(){
+        return socialMediaDAO.getAllMessages(); 
     }
 
 }
