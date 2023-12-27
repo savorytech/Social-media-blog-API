@@ -28,9 +28,25 @@ public class SocialMediaController {
         app.post("/messages", this::createMessage);
         app.get("/messages", this::getAllMessages); 
         app.get("/messages/{message_id}", this::getMessageById);
+        app.delete("/messages/{message_id}", this::deleteMessageById);
         
         return app;
     }
+    /**
+     * Handles the HTTP request to delete a message by its ID.
+     * Extracts the message ID from the request's path parameter and delegates the deletion task to the service layer.
+     * If the message is successfully deleted, the deleted message is returned as a JSON response to the client.
+     * If no message is found with the given ID, no response is sent.
+     *
+     * @param ctx the Javalin context object, used for extracting the message ID from the request and sending the response
+     */
+    private void deleteMessageById(Context ctx){
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message m = socialMediaService.deleteMessageById(message_id);
+        if(m != null){
+            ctx.json(m);
+        }
+    }   
 
     /**
      * Retrieves a message by its ID from the service layer and sends it in JSON format to the client.

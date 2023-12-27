@@ -77,4 +77,28 @@ public class SocialMediaService {
         return socialMediaDAO.getMessageById(message_id); 
     }
 
+    /**
+     * Deletes a message from the database by its ID and returns the deleted message.
+     * First, it fetches the message using its ID to verify if it exists in the database.
+     * If the message exists, it proceeds to delete it. If the deletion is successful, the method
+     * returns the deleted message. If the message does not exist or the deletion fails, it returns null.
+     *
+     * @param message_id The ID of the message to be deleted.
+     * @return The deleted Message object if the deletion is successful, otherwise null.
+     */
+    public Message deleteMessageById(int message_id){
+        Message m = socialMediaDAO.getMessageById(message_id);
+        if(m == null){
+            return null; 
+        }
+
+        boolean passed = socialMediaDAO.deleteMessageById(message_id); 
+        if(passed){
+            return m; 
+        }
+        else{
+            return null;
+        }
+    }
+
 }

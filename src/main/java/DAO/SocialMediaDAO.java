@@ -7,6 +7,32 @@ import java.util.List;
 import java.util.ArrayList; 
 public class SocialMediaDAO {
     /**
+     * Deletes a message from the database by its ID.
+     * Establishes a database connection and executes a SQL DELETE statement to remove the message
+     * with the specified ID. This method does not verify if the message exists before deletion and 
+     * does not return the deleted message data. It's designed to be used in conjunction with 
+     * another method that performs the existence check.
+     * 
+     * In case of an SQLException, the stack trace is printed. This method returns a boolean indicating 
+     * whether the deletion was successful (true) or not (false).
+     *
+     * @param message_id The ID of the message to be deleted.
+     * @return boolean indicating success (true) or failure (false) of the deletion.
+     */
+    public boolean deleteMessageById(int message_id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            PreparedStatement ps = conn.prepareStatement("DELETE FROM message where message_id = ?");
+            ps.setInt(1, message_id);
+            int affected = ps.executeUpdate();
+            if(affected > 0)
+                return true; 
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return false; 
+    }
+
+    /**
      * Retrieves a specific message by its ID from the database.
      * Executes a SQL query to find the message with the specified ID.
      * Converts the query result into a {@code Message} object if found.
