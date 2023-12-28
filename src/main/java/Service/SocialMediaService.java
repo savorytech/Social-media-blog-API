@@ -101,4 +101,30 @@ public class SocialMediaService {
         }
     }
 
+    /**
+     * Updates a message by its ID in the database.
+     * Validates the input message before updating. The message text should not exceed 255 characters
+     * and should not be empty after trimming whitespace. If the validation fails, the method returns null.
+     * If the validation passes, it calls the DAO layer to update the message in the database.
+     * If the update is successful, it fetches and returns the updated message using the message ID.
+     * If the update fails, it returns null.
+     *
+     * @param message The Message object containing the updated information.
+     * @param message_id The ID of the message to be updated.
+     * @return The updated Message object if the update is successful and validation passes, otherwise null.
+     */
+    public Message updateMessageTextById(Message message, int message_id){
+        if(message.getMessage_text().length() > 255 || message.getMessage_text().trim().equals(""))
+            return null;
+
+        boolean result = socialMediaDAO.updateMessageTextById(message, message_id);  
+        if(result){
+            return socialMediaDAO.getMessageById(message_id);
+        }
+        else{
+            return null;
+        }
+
+    }
+
 }

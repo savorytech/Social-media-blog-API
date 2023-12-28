@@ -29,9 +29,36 @@ public class SocialMediaController {
         app.get("/messages", this::getAllMessages); 
         app.get("/messages/{message_id}", this::getMessageById);
         app.delete("/messages/{message_id}", this::deleteMessageById);
+        app.patch("/messages/{message_id}", this::updateMessageTextById);
         
         return app;
     }
+    /**
+     * Updates a message by its ID.
+     * This method handles the HTTP request to update a specific message. It extracts the message ID from the
+     * path parameters and the message details from the request body. The message is then updated through the service layer.
+     * If the update is successful, the updated message is returned as a JSON response. If the update fails, 
+     * a 400 Bad Request status is returned.
+     *
+     * @param ctx the Javalin context object, used for extracting path parameters and request body, 
+     *            and for sending the response back to the client
+     */
+    void updateMessageTextById(Context ctx){
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message message = ctx.bodyAsClass(Message.class);
+        Message updatedMessage = socialMediaService.updateMessageTextById(message, message_id);
+
+        if(updatedMessage != null){
+            ctx.json(updatedMessage);
+        }
+        else{
+            ctx.status(400);
+        }
+    } 
+
+
+
+
     /**
      * Handles the HTTP request to delete a message by its ID.
      * Extracts the message ID from the request's path parameter and delegates the deletion task to the service layer.

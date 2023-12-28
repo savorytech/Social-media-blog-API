@@ -6,6 +6,32 @@ import Model.*;
 import java.util.List; 
 import java.util.ArrayList; 
 public class SocialMediaDAO {
+
+    /**
+     * Updates the message text of a specific message in the database by its ID.
+     * Establishes a database connection and executes a SQL UPDATE statement to modify the message text.
+     * The update is considered successful if exactly one record is affected.
+     *
+     * @param message The Message object containing the updated information. Only the message text is updated.
+     * @param message_id The ID of the message to be updated.
+     * @return true if the update was successful and affected one row, false otherwise.
+     */
+    public boolean updateMessageTextById(Message message, int message_id){
+        try(Connection conn = ConnectionUtil.getConnection()){
+            PreparedStatement ps = conn.prepareStatement("UPDATE message SET message_text = ? WHERE message_id = ?");
+            ps.setString(1, message.getMessage_text());
+            ps.setInt(2, message_id);
+            int result = ps.executeUpdate(); 
+            
+            if(result == 1){
+                return true; 
+            }
+        }catch(SQLException e){
+            e.printStackTrace(); 
+        }
+
+        return false; 
+    }
     /**
      * Deletes a message from the database by its ID.
      * Establishes a database connection and executes a SQL DELETE statement to remove the message
