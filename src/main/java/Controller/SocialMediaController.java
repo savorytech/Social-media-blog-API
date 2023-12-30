@@ -30,9 +30,22 @@ public class SocialMediaController {
         app.get("/messages/{message_id}", this::getMessageById);
         app.delete("/messages/{message_id}", this::deleteMessageById);
         app.patch("/messages/{message_id}", this::updateMessageTextById);
+        app.get("/accounts/{account_id}/messages", this::getAllMessagesByUserId);
         
         return app;
     }
+    
+    /**
+     * Handles the request to get all messages for a specific user.
+     * 
+     * @param ctx The context of the Javalin HTTP request.
+     */
+    private void getAllMessagesByUserId(Context ctx){
+        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+        ctx.json(socialMediaService.getAllMessagesByUserId(account_id));
+
+    }
+
     /**
      * Updates a message by its ID.
      * This method handles the HTTP request to update a specific message. It extracts the message ID from the

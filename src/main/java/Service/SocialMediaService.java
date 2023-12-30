@@ -126,5 +126,14 @@ public class SocialMediaService {
         }
 
     }
+    /**
+     * Retrieves all messages for a specific user from the DAO.
+     * 
+     * @param account_id The ID of the user for whom messages are being retrieved.
+     * @return A list of Message objects representing the user's messages.
+     */
+    public List<Message> getAllMessagesByUserId(int account_id){
+        return socialMediaDAO.getAllMessagesByUserId(account_id); 
+    }
 
 }

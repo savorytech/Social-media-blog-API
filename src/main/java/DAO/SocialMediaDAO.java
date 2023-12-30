@@ -6,7 +6,31 @@ import Model.*;
 import java.util.List; 
 import java.util.ArrayList; 
 public class SocialMediaDAO {
+    
+    /**
+     * Fetches all messages for a given user ID from the database.
+     * 
+     * @param account_id The ID of the user whose messages are to be retrieved.
+     * @return A list of Message objects representing the user's messages.
+     */
+    public List<Message> getAllMessagesByUserId(int account_id){
+        List<Message> messageToReturn = new ArrayList<>(); 
+        try(Connection conn = ConnectionUtil.getConnection()){
+            PreparedStatement ps = conn.prepareStatement("select * from message where posted_by = ?");
+            ps.setInt(1, account_id);
+            ResultSet rs = ps.executeQuery(); 
 
+
+            while(rs.next()){
+                Message m = new Message(rs.getInt("message_id"), account_id, rs.getString("message_text"), rs.getLong("time_posted_epoch"));
+                messageToReturn.add(m); 
+            }
+
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        return messageToReturn; 
+    }
     /**
      * Updates the message text of a specific message in the database by its ID.
      * Establishes a database connection and executes a SQL UPDATE statement to modify the message text.
